@@ -648,6 +648,128 @@ langToggle.addEventListener('click', () => {
 // Initialize contact form
 initContactForm();
 
+// ===== Project Gallery Functionality =====
+const initProjectGallery = (projectName) => {
+    const projectCard = document.querySelector(`[data-project="${projectName}"]`);
+    if (!projectCard) return;
+    
+    const gallery = projectCard.querySelector('.project-gallery');
+    const slides = gallery.querySelectorAll('.gallery-slide');
+    const prevBtn = projectCard.querySelector('.gallery-prev');
+    const nextBtn = projectCard.querySelector('.gallery-next');
+    const description = projectCard.querySelector('.project-description');
+    
+    let currentSlide = 0;
+    
+    // Function to update description based on current slide and language
+    const updateDescription = () => {
+        const currentSlideElement = slides[currentSlide];
+        const currentLang = localStorage.getItem('language') || 'en';
+        const isFrench = currentLang === 'fr';
+        
+        const descriptionText = isFrench ? 
+            currentSlideElement.getAttribute('data-description-fr') : 
+            currentSlideElement.getAttribute('data-description-en');
+        
+        if (descriptionText) {
+            description.textContent = descriptionText;
+        }
+    };
+    
+    // Function to show specific slide
+    const showSlide = (slideIndex) => {
+        // Remove active class from all slides
+        slides.forEach(slide => slide.classList.remove('active'));
+        
+        // Add active class to current slide
+        slides[slideIndex].classList.add('active');
+        
+        currentSlide = slideIndex;
+        
+        // Update description based on current slide
+        updateDescription();
+    };
+    
+    // Function to show next slide
+    const showNextSlide = () => {
+        const nextIndex = (currentSlide + 1) % slides.length;
+        showSlide(nextIndex);
+    };
+    
+    // Function to show previous slide
+    const showPrevSlide = () => {
+        const prevIndex = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
+        showSlide(prevIndex);
+    };
+    
+    // Event listeners for navigation buttons
+    prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrevSlide();
+    });
+    
+    nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNextSlide();
+    });
+    
+    // Keyboard navigation
+    projectCard.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            showPrevSlide();
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            showNextSlide();
+        }
+    });
+    
+    // Touch/swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    gallery.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    gallery.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+    
+    const handleSwipe = () => {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                showNextSlide();
+            } else {
+                showPrevSlide();
+            }
+        }
+    };
+    
+    // Listen for language changes and update description accordingly
+    const languageToggle = document.getElementById('lang-toggle');
+    if (languageToggle) {
+        languageToggle.addEventListener('click', () => {
+            // Small delay to ensure language has been updated
+            setTimeout(() => {
+                updateDescription();
+            }, 100);
+        });
+    }
+    
+    // Initialize with first slide
+    showSlide(0);
+};
+
+// Initialize gallery functionality for all projects
+initProjectGallery('modoock');
+initProjectGallery('mahaacademy');
+initProjectGallery('terrain360');
+
 // ===== Project Image Slideshow on Hover =====
 const projectCards = document.querySelectorAll('.project-card');
 
