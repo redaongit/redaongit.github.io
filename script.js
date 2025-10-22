@@ -769,6 +769,7 @@ const initProjectGallery = (projectName) => {
 initProjectGallery('modoock');
 initProjectGallery('mahaacademy');
 initProjectGallery('terrain360');
+initProjectGallery('villas');
 
 // ===== Project Image Slideshow on Hover =====
 const projectCards = document.querySelectorAll('.project-card');
