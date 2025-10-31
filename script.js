@@ -435,18 +435,65 @@ const createCursor = () => {
 // Initialize custom cursor
 createCursor();
 
-// ===== Loading Animation =====
-window.addEventListener('load', () => {
-    document.body.style.overflow = 'auto';
+// ===== Loading Animation with Typewriter Effect =====
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText = document.getElementById('loading-text');
+
+// Typewriter effect function
+const typewriterEffect = (element, text, speed = 100) => {
+    let index = 0;
+    element.textContent = '';
     
-    // Add stagger animation to hero elements
-    const heroElements = document.querySelectorAll('.fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3');
-    heroElements.forEach(el => {
-        el.style.opacity = '0';
-        setTimeout(() => {
-            el.style.opacity = '1';
-        }, 100);
-    });
+    const type = () => {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            setTimeout(type, speed);
+        }
+    };
+    
+    type();
+};
+
+// Start typewriter effect on page load
+window.addEventListener('DOMContentLoaded', () => {
+    // Prevent body scroll during loading
+    document.body.style.overflow = 'hidden';
+    
+    // Start typewriter effect after a delay
+    setTimeout(() => {
+        typewriterEffect(loadingText, 'loading...', 80);
+    }, 500); // 500ms delay before starting
+});
+
+// Hide loading overlay when page is fully loaded
+window.addEventListener('load', () => {
+    // Wait for typewriter effect to complete (text length * speed + some buffer)
+    const textLength = 'loading...'.length;
+    const typewriterDuration = textLength * 80;
+    const minDisplayTime = 1500; // Minimum time to show loader (1.5 seconds)
+    
+    // Ensure minimum display time has passed
+    setTimeout(() => {
+        if (loadingOverlay) {
+            loadingOverlay.classList.add('hidden');
+            
+            // Remove overlay after fade out
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 500);
+        }
+        
+        // Add stagger animation to hero elements
+        const heroElements = document.querySelectorAll('.fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3');
+        heroElements.forEach(el => {
+            el.style.opacity = '0';
+            setTimeout(() => {
+                el.style.opacity = '1';
+            }, 100);
+        });
+    }, Math.max(typewriterDuration, minDisplayTime));
 });
 
 // ===== Scroll Reveal Animation =====
