@@ -841,76 +841,120 @@ section {
     box-shadow: var(--shadow-xl);
 }
 
-.project-image {
+/* ===== Project Header (Replaces Images) ===== */
+.project-header {
     width: 100%;
-    height: 250px;
-    background: var(--bg-secondary);
+    height: 220px;
     position: relative;
     overflow: hidden;
-}
-
-/* ===== Project Image Slideshow ===== */
-.project-slideshow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.slideshow-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.8s ease-in-out;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: smooth;
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    backface-visibility: hidden;
-}
-
-.slideshow-slide.active {
-    opacity: 1;
-}
-
-.project-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.project-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    animation: slidePattern 20s linear infinite;
+    opacity: 0.3;
+}
+
+.project-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.project-card:hover .project-header::after {
+    transform: translateX(100%);
+}
+
+@keyframes slidePattern {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(30px, 30px);
+    }
+}
+
+.project-icon {
+    font-size: 6rem;
+    z-index: 2;
+    position: relative;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    transition: var(--transition);
+    transform: scale(1);
+    background: rgba(255, 255, 255, 0.15);
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.project-card:hover .project-icon {
+    transform: scale(1.2) rotate(5deg);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.project-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
     transition: var(--transition);
 }
 
-.project-card:hover .project-overlay {
+.project-card:hover .project-gradient {
     opacity: 1;
 }
 
-.project-link {
-    padding: 0.75rem 1.5rem;
-    background: white;
-    color: var(--primary-color);
-    text-decoration: none;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    transform: translateY(20px);
-    transition: var(--transition);
+/* Unique gradient for each project */
+.project-gradient-1 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.project-card:hover .project-link {
-    transform: translateY(0);
+.project-gradient-2 {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.project-gradient-3 {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.project-gradient-4 {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.project-gradient-5 {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.project-gradient-6 {
+    background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
 }
 
 .project-content {
@@ -1166,6 +1210,16 @@ section {
         grid-template-columns: 1fr;
     }
     
+    .project-header {
+        height: 180px;
+    }
+    
+    .project-icon {
+        font-size: 5rem;
+        width: 120px;
+        height: 120px;
+    }
+    
     .certificate-image {
         height: 150px;
     }
@@ -1174,6 +1228,16 @@ section {
 @media (max-width: 480px) {
     .container {
         padding: 0 1rem;
+    }
+    
+    .project-header {
+        height: 160px;
+    }
+    
+    .project-icon {
+        font-size: 4rem;
+        width: 100px;
+        height: 100px;
     }
     
     .certificate-image {
