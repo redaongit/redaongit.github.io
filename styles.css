@@ -969,6 +969,10 @@ section {
     background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
 }
 
+.project-gradient-10 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+}
+
 .project-content {
     padding: 1.5rem;
 }
